@@ -2,6 +2,8 @@
 """
 Created on Mon Jan 23 09:19:26 2023
 
+Load in h5 GCAS NO2 column data & save out as a minute average CSV
+
 @author: kokorn
 """
 
@@ -26,7 +28,7 @@ data = pd.DataFrame()
 
   
 #iterate over each file in the main folder
-for i in range(len(fileList)-1):
+for i in range(len(fileList)):
     
     #Create full file path for reading file
     filePath = os.path.join(path, fileList[i])
