@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Feb  9 11:53:49 2023
+Created on Tue Mar 21 18:57:27 2023
 
-@author: kokorn
+Load in the P3 CAMS data
+
+@author: okorn
 """
 
 #Import in necessary packages
@@ -26,7 +28,7 @@ data = pd.DataFrame()
   #datetime, CO2 (wet), CH4 (wet), H2O
   
 #iterate over each file in the main folder
-for i in range(len(fileList)-1):
+for i in range(len(fileList)):
     
     #Create full file path for reading file
     filePath = os.path.join(path, fileList[i])
