@@ -21,9 +21,6 @@ fileList = [f for f in listdir(path) if isfile(join(path, f))]
 
 #create a dictionary to hold our data from each file
 data = pd.DataFrame()
-
-#loop through each of the files & extract only the columns we need:
-  #datetime, CO2 (wet), CH4 (wet), H2O
   
 #iterate over each file in the main folder
 for i in range(len(fileList)):
