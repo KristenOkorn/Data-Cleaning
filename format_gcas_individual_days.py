@@ -34,7 +34,7 @@ fileList = [f for f in listdir(path) if isfile(join(path, f))]
 
 
 #iterate over each file in the main folder
-for i in range(len(fileList)-1):
+for i in range(len(fileList)):
     
     #Create full file path for reading file
     filePath = os.path.join(path, fileList[i])
