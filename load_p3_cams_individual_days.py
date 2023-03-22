@@ -44,16 +44,11 @@ for i in range(len(fileList)):
     #rename the HCHO column
     temp = temp.rename(columns={' CH2O_pptv': 'HCHO'})
     
-    #now get the original datestamp to add to the time
-    with open(filePath, 'r') as f:
-        lines = f.readlines()
-        date = lines[6]
-        
-    #remove the second date in here
-    date = date[:-14]
+    #get the date string to use when we save it out
+    date_str=fileList[i][20:28]
         
     #now reforrmat as a datetime
-    date = datetime.strptime(date, "%Y, %m, %d")
+    date = datetime.strptime(date_str, "%Y%m%d")
     
     #add this to our times of day
     temp['datetime'] = temp['UTC_start'] + date
@@ -67,9 +62,9 @@ for i in range(len(fileList)):
     #resample (retime) the data to minutely
     temp = temp.resample('T').mean()
     
-    #get the date string to use when we save it out
-    date_str=fileList[i][20:28]
+    #get rid of missing values
+    temp = temp.dropna()
 
     #save out the final data
     savePath = os.path.join(path,'{}_CAMS.csv'.format(date_str))
-    data.to_csv(savePath)
+    temp.to_csv(savePath)
