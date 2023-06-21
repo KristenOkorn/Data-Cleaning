@@ -52,7 +52,7 @@ full_data['CH4'] = full_data['CH4'] / 1.0078
 
 #resample (retime) the data to minutely
 full_data['DATE_TIME'] = pd.to_datetime(full_data['DATE_TIME'])
-full_data = full_data.set_index('DATE_TIME').resample('1Min').ffill()
+full_data = full_data.set_index('DATE_TIME').resample('T').mean()
 
 #get the final data in a convenient format
 CO2 = pd.DataFrame(full_data.index,full_data['CO2'])
