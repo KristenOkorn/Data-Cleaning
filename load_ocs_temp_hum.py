@@ -53,7 +53,7 @@ full_data = full_data.drop_duplicates(subset='Time')
 #make time our index & ensure they're in increasing order
 full_data = full_data.set_index('Time').sort_index()
 #resample (retime) the data to minutely
-full_data = full_data.resample('1Min').bfill()
+full_data = full_data.resample('T').mean()
 
 #save out the final data
 savePath = os.path.join(path,'ocs_temp_hum.csv')
