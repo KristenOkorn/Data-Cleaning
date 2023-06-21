@@ -52,8 +52,8 @@ full_data['Time'] = pd.to_datetime(full_data['Time'])
 full_data = full_data.drop_duplicates(subset='Time')
 #make time our index & ensure they're in increasing order
 full_data = full_data.set_index('Time').sort_index()
-#resample (retime) the data to minutely
-full_data = full_data.resample('1Min').bfill()
+#resample the data to minutely
+full_data = full_data.resample('T').mean()
 
 #get the final data in a convenient format
 full_data = full_data.rename(columns={'Time':'datetime','[CO_dry]_ppm': 'CO'})
