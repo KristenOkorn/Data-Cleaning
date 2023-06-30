@@ -21,6 +21,16 @@ filePath = os.path.join(path, 'Calibrated data - full data.csv')
 #load in the file
 temp = pd.read_csv(filePath,usecols=['corrected_datetime','corrected_o3'])
 
+#Get rid of rows containing a value error
+temp = temp[~(temp['corrected_o3'].astype(str).str.contains('#VALUE!') | temp['corrected_o3'].isnull())]
+#Convert the ozone data from string to float
+temp['corrected_o3'] = temp['corrected_o3'].astype(float)
+
+#make the datetime the index
+temp = temp.set_index('corrected_datetime')
+#Convert to datetime
+temp.index = pd.to_datetime(temp.index)
+
 # Resample the DataFrame to minute frequency and calculate the mean value
 temp = temp.resample('T').mean()
 
