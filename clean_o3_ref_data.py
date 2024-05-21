@@ -53,6 +53,9 @@ for i in range(len(fileList)):
 #concatenate all of our data into 1 array
 full_data = pd.concat(data_dict.values())
 
+#Make sure our ozone data is numeric
+full_data['O3'] = pd.to_numeric(full_data['O3'], errors='coerce')
+
 #apply the calibration correction for O3
 full_data['O3'] = (full_data['O3']*0.9704) + 4.6719
 
@@ -66,7 +69,7 @@ full_data = full_data.resample("T").mean()
 #remove empty rows from retime
 full_data = full_data.dropna()
 
-#Picarro runs 1 min and 2-3 sec slower - account for this
+#2BTech runs 1 min and 2-3 sec slower - account for this
 full_data.index = full_data.index + pd.Timedelta(minutes=7, seconds=2)
 
 #save out the final data
