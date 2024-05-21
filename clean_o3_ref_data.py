@@ -45,7 +45,7 @@ for i in range(len(fileList)):
     #also drop the first line - doesn't always record
     temp = temp.drop(index=0)
     #combine date & time
-    temp['datetime'] = pd.to_datetime(temp['date'] + ' ' + temp['time'])
+    temp['datetime'] = pd.to_datetime(temp['date'] + ' ' + temp['time'],format='%d/%m/%y %H:%M:%S')
     
     #Save this into our data dictionary
     data_dict['{}'.format(fileList[i])] = temp
@@ -57,7 +57,8 @@ full_data = pd.concat(data_dict.values())
 full_data['O3'] = pd.to_numeric(full_data['O3'], errors='coerce')
 
 #apply the calibration correction for O3
-full_data['O3'] = (full_data['O3']*0.9704) + 4.6719
+#full_data['O3'] = (full_data['O3']*0.9704) + 4.6719 #dec2023 colo
+full_data['O3'] = (full_data['O3']*0.9577) + 4.1336 #may 2023 colo
 
 #make the datetime the index
 full_data.index = full_data['datetime']
@@ -70,7 +71,7 @@ full_data = full_data.resample("T").mean()
 full_data = full_data.dropna()
 
 #2BTech runs 1 min and 2-3 sec slower - account for this
-full_data.index = full_data.index + pd.Timedelta(minutes=7, seconds=2)
+full_data.index = full_data.index + pd.Timedelta(minutes=6, seconds=2)
 
 #save out the final data
 savePath = os.path.join(path,'O3_2024.csv')
