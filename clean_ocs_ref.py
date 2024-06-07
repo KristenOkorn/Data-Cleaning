@@ -29,7 +29,7 @@ data_dict = {}
   #datetime, CO (dry)
   
 #iterate over each file in the main folder
-for i in range(len(fileList)-1):
+for i in range(len(fileList)):
     
     #Create full file path for reading file
     filePath = os.path.join(path, fileList[i])
@@ -39,6 +39,9 @@ for i in range(len(fileList)-1):
  
     #remove empty spaces in data for workability
     temp.columns = temp.columns.str.strip()
+    
+    #remove any nans
+    temp = temp.dropna()
 
     #Save this into our data dictionary
     data_dict['{}'.format(fileList[i])] = temp
@@ -46,21 +49,29 @@ for i in range(len(fileList)-1):
 #concatenate all of our data into 1 array
 full_data = pd.concat(data_dict.values())
 
+#strip leading and trailing spaces
+full_data['Time'] = full_data['Time'].str.strip()
 #make our data a datetime
-full_data['Time'] = pd.to_datetime(full_data['Time'])
+full_data['Time'] = pd.to_datetime(full_data['Time'],format= '%m/%d/%Y %H:%M:%S.%f')
+#drop fractional seconds
+full_data['Time'] = full_data['Time'].dt.floor('S')
 #delete any measurements less than a second apart
 full_data = full_data.drop_duplicates(subset='Time')
 #make time our index & ensure they're in increasing order
 full_data = full_data.set_index('Time').sort_index()
+#delete any messed up values
+full_data = full_data[full_data.index.year >= 2023]
+#convert our columns to numeric
+full_data['[CO_dry]_ppm'] = pd.to_numeric(full_data['[CO_dry]_ppm'], errors='coerce')
 #resample the data to minutely
 full_data = full_data.resample('T').mean()
 
 #get the final data in a convenient format
 full_data = full_data.rename(columns={'Time':'datetime','[CO_dry]_ppm': 'CO'})
-CO = pd.DataFrame(full_data.index,full_data['CO'])
+CO = pd.DataFrame(full_data['CO'], index=full_data.index)
 
 #apply the calibration & convert to ppm from ppb
-CO.index = (CO.index + 0.0134) * 997.5
+CO['CO'] = (CO['CO'] + 0.0134) * 997.5
 
 #save out the final data
 savePath = os.path.join(path,'CO.csv')
