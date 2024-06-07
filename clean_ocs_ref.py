@@ -55,8 +55,6 @@ full_data['Time'] = full_data['Time'].str.strip()
 full_data['Time'] = pd.to_datetime(full_data['Time'],format= '%m/%d/%Y %H:%M:%S.%f')
 #drop fractional seconds
 full_data['Time'] = full_data['Time'].dt.floor('S')
-#delete any measurements less than a second apart
-full_data = full_data.drop_duplicates(subset='Time')
 #make time our index & ensure they're in increasing order
 full_data = full_data.set_index('Time').sort_index()
 #delete any messed up values
