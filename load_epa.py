@@ -87,7 +87,7 @@ for n in range(len(pollutants)):
        1010: 'EastProvidence',
        3006: 'Hawthorne',
        15: 'Detroit',
-       24: 'AldineTX',
+       24: 'Aldine',
        88: 'Hampton'
        }
 
