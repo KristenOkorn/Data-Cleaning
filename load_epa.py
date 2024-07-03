@@ -105,7 +105,7 @@ for n in range(len(pollutants)):
     #Clean up the format before saving it out
     for name, dataframe in dataframes.items():
         dataframe = dataframe.drop(columns=['Latitude','Longitude','Site Num'])
-        dataframe = dataframe.rename(columns={'Sample Measurement': 'O3'})
+        dataframe = dataframe.rename(columns={'Sample Measurement': '{}'.format(pollutants[n])})
    
         #Save each DataFrame to a CSV
         #spath = 'C:\\Users\\okorn\\Documents\\2023 Deployment\\Modeling Surface Concentrations\\EPA\\Output Data'
